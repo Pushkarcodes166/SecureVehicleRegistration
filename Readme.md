@@ -244,3 +244,65 @@ The system hashes chassis and owner identifiers before storing them on-chain. Ha
 ## License
 
 This project is intended for educational and academic demonstration purposes.
+## Quick Setup Using PowerShell (Windows)
+
+The project includes two PowerShell scripts to simplify installation and startup on another Windows computer.
+
+### Prerequisites
+
+Install the following before starting:
+
+- Node.js LTS and npm
+- Git
+- Windows PowerShell
+
+An internet connection is required to download project dependencies.
+
+### 1. Clone the repository
+
+```powershell
+git clone https://github.com/Pushkarcodes166/SecureVehicleRegistration.git
+cd SecureVehicleRegistration
+```
+
+### 2. Install dependencies and compile the contract
+
+Run the following command from the project root:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\setup.ps1
+```
+
+The setup script installs dependencies for the blockchain, backend and frontend, compiles the Solidity contract, and prepares the contract ABI for the backend.
+
+### 3. Start the application
+
+Run:
+
+```powershell
+.\start.ps1
+```
+
+The startup script starts or checks the local Hardhat blockchain, deploys the smart contract, configures the backend environment, selects available application ports, and launches the backend and frontend.
+
+Open the frontend URL printed in the terminal. The default is usually `http://localhost:5173`, but the selected port may differ if the default port is occupied.
+
+### 4. Verify the application
+
+Check the backend health endpoint printed by the startup script. For example:
+
+```text
+http://localhost:5000/api/health
+```
+
+A successful response should indicate that the API is running and the blockchain is connected. Use the actual backend port printed in your terminal.
+
+### Important Notes
+
+- Run the scripts from the project root directory.
+- Keep the blockchain, backend and frontend terminal windows open while using the application.
+- The backend `.env` file is generated or updated by the startup script.
+- Do not upload `.env` files containing local configuration or secrets to GitHub.
+- Restarting the Hardhat node resets its local blockchain state. Deploy the contract and register demo vehicles again after a reset.
+- The PowerShell scripts are intended for Windows. Other operating systems require an equivalent setup procedure.

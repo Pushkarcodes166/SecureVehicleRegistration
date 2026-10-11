@@ -1,8 +1,8 @@
-
+﻿
 import { useCallback, useEffect, useState } from "react";
 import "./index.css";
 
-const API = "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const NAV = [
   { id: "Dashboard", label: "Overview", icon: "grid" },
@@ -59,7 +59,7 @@ const EMPTY_VEHICLE = {
 function App() {
   const [page, setPage] = useState("Dashboard");
   const [mobileMenu, setMobileMenu] = useState(false);
-  const [stats, setStats] = useState("—");
+  const [stats, setStats] = useState("â€”");
   const [network, setNetwork] = useState("checking");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState(null);
@@ -101,7 +101,7 @@ function App() {
       setStats(summary.totalVehicles);
     } catch {
       setNetwork("offline");
-      setStats("—");
+      setStats("â€”");
     }
   }, [request]);
 
@@ -332,7 +332,7 @@ function App() {
                     <span className="stat-category">NETWORK</span>
                   </div>
                   <div className="stat-number stat-word">{online ? "Connected" : network === "checking" ? "Checking" : "Offline"}</div>
-                  <div className="stat-bottom"><span>Hardhat local · Chain 31337</span><span className={`mini-status ${online ? "ok" : "bad"}`} /></div>
+                  <div className="stat-bottom"><span>Hardhat local Â· Chain 31337</span><span className={`mini-status ${online ? "ok" : "bad"}`} /></div>
                 </article>
                 <article className="stat-card">
                   <div className="stat-top">
@@ -593,3 +593,4 @@ function App() {
 }
 
 export default App;
+
