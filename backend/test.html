@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vehicle Registration Test</title>
+</head>
+<body style="font-family:Arial;max-width:650px;margin:40px auto;padding:20px">
+  <h2>Secure Vehicle Registration</h2>
+
+  <form id="registerForm">
+    <input name="registrationNumber" placeholder="Registration Number" required><br><br>
+    <input name="chassisNumber" placeholder="Chassis Number" required><br><br>
+    <input name="manufacturer" placeholder="Manufacturer" required><br><br>
+    <input name="model" placeholder="Vehicle Model" required><br><br>
+    <input name="manufacturingYear" type="number" placeholder="Manufacturing Year" required><br><br>
+    <input name="ownerIdentifier" placeholder="Owner Identifier" required><br><br>
+    <button type="submit">Register Vehicle</button>
+  </form>
+
+  <hr>
+  <h3>Verify Vehicle</h3>
+  <input id="verifyReg" placeholder="Registration Number"><br><br>
+  <input id="verifyChassis" placeholder="Chassis Number"><br><br>
+  <button id="verifyButton">Verify Vehicle</button>
+
+  <pre id="result" style="white-space:pre-wrap;overflow-wrap:anywhere"></pre>
+
+  <script>
+    const result = document.getElementById("result");
+
+    document.getElementById("registerForm").onsubmit = async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target));
+
+      data.manufacturingYear = Number(data.manufacturingYear);
+      result.textContent = "Registering on blockchain...";
+
+      try {
+        const response = await fetch("http://localhost:5000/api/vehicles", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(data)
+        });
+
+        result.textContent = JSON.stringify(await response.json(), null, 2);
+      } catch (error) {
+        result.textContent = error.message;
+      }
+    };
+
+    document.getElementById("verifyButton").onclick = async () => {
+      result.textContent = "Verifying...";
+
+      try {
+        const response = await fetch("http://localhost:5000/api/vehicles/verify", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({
+            registrationNumber: document.getElementById("verifyReg").value,
+            chassisNumber: document.getElementById("verifyChassis").value
+          })
+        });
+
+        result.textContent = JSON.stringify(await response.json(), null, 2);
+      } catch (error) {
+        result.textContent = error.message;
+      }
+    };
+  </script>
+</body>
+</html>
